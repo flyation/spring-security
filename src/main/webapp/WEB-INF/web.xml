@@ -9,7 +9,7 @@
     <filter>
         <!-- <filter-name>springSecurityFilterChain</filter-name>标签中必须是springSecurityFilterChain。
             因为 springSecurityFilterChain 在 IOC 容器中对应真正执行权限控制的二十几个 Filter，
-            只有叫这个名字才能够加载到这些 Filter。 -->
+            SpringSecurity会根据filter-name去IoC容器中找对应的bean，只有叫这个名字才能够加载到这些 Filter。 -->
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>

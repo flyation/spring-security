@@ -34,7 +34,7 @@
 			</dl></li>
 		<li class="layui-nav-item">
 			<%-- 禁用CSRF时最简单的退出方式 --%>
-			<a href="${pageContext.request.contextPath}/do/logout.html">退出</a>
+<%--			<a href="${pageContext.request.contextPath}/do/logout.html">退出</a>--%>
 
 			<%-- 未禁用CSRF时的退出方式 --%>
 			<form id="logoutForm" action="${pageContext.request.contextPath }/do/logout.html" method="post">
