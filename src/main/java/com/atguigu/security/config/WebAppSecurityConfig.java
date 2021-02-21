@@ -1,6 +1,7 @@
 package com.atguigu.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 
@@ -27,8 +29,26 @@ public class WebAppSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
+    /**
+     * 自己写的userDetailsService
+     */
     @Autowired
     private UserDetailsService userDetailsService;
+
+    /**
+     * 自己写的passwordEncoder
+     */
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
+
+    /**
+     * Spring Security提供的bCryptPasswordEncoder。
+     * 因为bean默认为单例，所以每次调用这个方法时会先去IoC中检查是否已存在这个对象，若存在则直接使用那个对象，不会真正执行这个函数。
+     */
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
@@ -44,7 +64,9 @@ public class WebAppSecurityConfig extends WebSecurityConfigurerAdapter {
 //                ;
 
         builder
-                .userDetailsService(userDetailsService); //装配自己写的userDetailsService
+                .userDetailsService(userDetailsService) // 用自己写的userDetailsService做登录检查
+                .passwordEncoder(bCryptPasswordEncoder())       // 用自己写的passwordEncoder进行密码加密
+                ;
     }
 
     @Override
